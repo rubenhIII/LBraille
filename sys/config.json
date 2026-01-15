@@ -1,0 +1,13 @@
+{
+    "PUNTOS_DIARIOS_MAX": 200,
+    "DIAS_PENALIZACION": 5,
+    "PUNTOS_PENALIZACION_POR_DIA": 10,
+    "WIDTH": 800,
+    "HEIGHT": 600,
+    "COLORES": {
+        "CL_FONDO": [0, 0, 0],
+        "CL_TEXTO": [255, 255, 255],
+        "CL_TEXTO_RES": [0, 255, 0],
+        "CL_TEXTO_ADV": [255, 0, 0]
+    }
+}

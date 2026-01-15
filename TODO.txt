@@ -1,0 +1,6 @@
+-Detectar letras con acento
+-Grabar audio de las letras del alfabeto, un audio de la palabra "letra", presionando el boton ayuda, te indica como teclear la letra, se puede implementar en todos
+-Cantidad de palabra 
+-Pensar en configuracion de usuario y juego separados, configurar de cuantas palabras (JSON distinto)
+-Ver distribucion de teclado del teclado de braile
+-Tutorial de como funciona
