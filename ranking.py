@@ -2,7 +2,8 @@ import os
 import json
 import pygame
 from perfil import get_color
-from tts import speak_async
+#from tts import speak_async
+from speaker import sp
 from entorno_instalacion import base_path
 
 folder = {"users": "usr"}
@@ -10,7 +11,7 @@ folder = {"users": "usr"}
 
 def ranking_usuarios():
     usuarios = []
-    for archivo in os.listdir(folder["users"]):
+    for archivo in os.listdir(os.path.join(base_path, folder["users"])):
         if archivo.endswith(".json"):
             path = os.path.join(base_path, folder["users"], archivo)
             with open(path, "r") as f:
@@ -54,10 +55,12 @@ def mostrar_ranking(nombre_usuario, pantalla, fuente):
     for i, (usuario, puntos) in enumerate(ranking[:3], 1):
         top_voz += f"Puesto {i}, {usuario} con {puntos} puntos. "
 
-    speak_async(mensaje + top_voz)
+    sp.speak_async(mensaje + top_voz)
 
     # Esperar tecla para continuar
     esperando = True
+
+    sp.speak_async("Presiona ENTER para volver al menú principal")
     while esperando:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

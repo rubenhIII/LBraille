@@ -1,6 +1,6 @@
 import pygame
 import sys
-from tts import speak_async
+from speaker import sp
 from juego import juego
 from configuracion import configuracion_menu
 from ranking import mostrar_ranking
@@ -31,7 +31,10 @@ def menu(usuario, screen, font):
 
     # Reproducir sonido al entrar
     reproducir_ding()
-    speak_async(options[selected])
+    #if sp.speak_async(options[selected]) == False:
+    #    print("El engine no está disponible")
+    #else:
+    #    print("El engine SI está disponible")
 
     while True:
         current_time = pygame.time.get_ticks()
@@ -57,21 +60,21 @@ def menu(usuario, screen, font):
                     if selected == 0:
                         juego(usuario, screen, font)
                         reproducir_ding()
-                        speak_async(options[selected])
+                        sp.speak_async(options[selected])
                     elif selected == 1:
                         configuracion_menu(usuario, screen, font)
                         reproducir_ding()
-                        speak_async(options[selected])
+                        sp.speak_async(options[selected])
                     elif selected == 2:
                         mostrar_ranking(usuario, screen, font)
                         reproducir_ding()
-                        speak_async(options[selected])
+                        sp.speak_async(options[selected])
                     elif selected == 3:
                         pygame.quit()
                         sys.exit()
 
         if selected != last_selected and (current_time - last_tts_time) > 200:
-            speak_async(options[selected])
+            sp.speak_async(options[selected])
             last_selected = selected
             last_tts_time = current_time
 

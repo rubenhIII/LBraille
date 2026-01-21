@@ -2,7 +2,6 @@ from auth import login_o_registrar_usuario
 from menu import menu
 import pygame
 from perfil import cargar_configuracion_global
-import entorno_instalacion
 
 # Inicializar Pygame y pantalla
 pygame.init()

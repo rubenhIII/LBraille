@@ -23,7 +23,8 @@ try:
     engine = pyttsx3.init()
     engine.setProperty('rate', 150)
     engine.setProperty('volume', 0.5)
-    change_voice(engine, 'es', "Male")
+    change_voice(engine, 'es-ES', "Female")
+    #change_voice(engine, 'es', "Male")
 except Exception as e:
     print(f"Error al inicializar pyttsx3: {e}")
     engine = None
@@ -37,22 +38,25 @@ tts_thread = None
 def tts_worker():
     while not stop_tts.is_set():
         try:
-            texto = tts_queue.get(timeout=0.1)
+            texto = tts_queue.get(timeout=5)
+            print(texto)
             if engine:
                 try:
                     engine.stop()
                     engine.say(texto)
+                    print(f"Traté de decir {texto}")
                     engine.runAndWait()
                 except Exception as e:
                     print(f"Error en TTS: {e}")
             tts_queue.task_done()
         except queue.Empty:
+            print("Cola de mensajes vacia")
             continue
 
 
 def speak_async(text):
     if engine is None:
-        return
+        return False
 
     with tts_queue.mutex:
         tts_queue.queue.clear()
@@ -64,3 +68,5 @@ def speak_async(text):
         stop_tts.clear()
         tts_thread = threading.Thread(target=tts_worker, daemon=True)
         tts_thread.start()
+    
+    return True

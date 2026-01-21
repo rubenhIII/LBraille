@@ -1,7 +1,8 @@
 import os
 import json
 import pygame
-from tts import speak_async
+#from tts import speak_async
+from speaker import sp
 from entorno_instalacion import base_path
 
 folder = {"users": "usr"}
@@ -10,7 +11,7 @@ folder = {"users": "usr"}
 def pedir_texto(pantalla, fuente, mensaje):
     entrada = ""
     reloj = pygame.time.Clock()
-    speak_async(mensaje)
+    sp.speak_async(mensaje)
 
     while True:
         pantalla.fill((0, 0, 0))
@@ -39,8 +40,8 @@ def pedir_texto(pantalla, fuente, mensaje):
 
 
 def login_o_registrar_usuario(pantalla, fuente):
+    sp.speak_async("¿Ya tienes un usuario? Presiona S para sí, N para no")
     while True:
-        speak_async("¿Ya tienes un usuario? Presiona S para sí, N para no")
         pantalla.fill((0, 0, 0))
         texto = fuente.render("¿Ya tienes un usuario? (S/N)", True, (255, 255, 255))
         pantalla.blit(texto, (50, 200))
@@ -62,10 +63,10 @@ def login(pantalla, fuente):
         nombre = pedir_texto(pantalla, fuente, "Ingresa tu nombre de usuario:")
         ruta = os.path.join(base_path, folder["users"], f"{nombre}.json")
         if os.path.exists(ruta):
-            speak_async(f"Bienvenido de nuevo, {nombre}")
+            sp.speak_async(f"Bienvenido de nuevo, {nombre}")
             return nombre
         else:
-            speak_async("Usuario no encontrado. ¿Deseas registrarte con ese nombre? S o N")
+            sp.speak_async("Usuario no encontrado. ¿Deseas registrarte con ese nombre? S o N")
             esperando = True
             while esperando:
                 for event in pygame.event.get():
@@ -83,7 +84,7 @@ def registrar(pantalla, fuente):
         nombre = pedir_texto(pantalla, fuente, "Escribe tu nuevo nombre de usuario:")
         ruta = os.path.join(base_path, folder["users"], f"{nombre}.json")
         if os.path.exists(ruta):
-            speak_async("Ese nombre ya está en uso. ¿Deseas iniciar sesión con ese nombre? S o N")
+            sp.speak_async("Ese nombre ya está en uso. ¿Deseas iniciar sesión con ese nombre? S o N")
             esperando = True
             while esperando:
                 for event in pygame.event.get():
@@ -96,7 +97,7 @@ def registrar(pantalla, fuente):
                         elif event.key == pygame.K_n:
                             esperando = False
         else:
-            speak_async(f"Usuario {nombre} registrado correctamente.")
+            sp.speak_async(f"Usuario {nombre} registrado correctamente.")
             from perfil import default_config
             with open(ruta, 'w') as f:
                 json.dump(default_config.copy(), f, indent=4)
@@ -104,7 +105,7 @@ def registrar(pantalla, fuente):
 
 def registrar_con_nombre(pantalla, fuente, nombre):
     ruta = os.path.join(base_path, folder["users"], f"{nombre}.json")
-    speak_async(f"Usuario {nombre} registrado correctamente.")
+    sp.speak_async(f"Usuario {nombre} registrado correctamente.")
     from perfil import default_config
     with open(ruta, 'w') as f:
         json.dump(default_config.copy(), f, indent=4)
