@@ -3,6 +3,7 @@ import random
 import pygame
 from perfil import cargar_perfil, guardar_perfil, get_color, get_configuracion
 from entorno_instalacion import base_path
+from speaker import sp
 
 folder = {"audio": "sounds", "users": "usr"}
 
@@ -122,6 +123,7 @@ def juego(usuario, screen, font):
 
         if tiempo_restante <= 0:
             mostrar_mensaje(screen, font, "¡Tiempo agotado!", get_color("CL_TEXTO_ADV"))
+            sp.speak_async("Tiempo Agotado!")
             return
 
 
