@@ -61,7 +61,8 @@ def login_o_registrar_usuario(pantalla, fuente):
 def login(pantalla, fuente):
     while True:
         nombre = pedir_texto(pantalla, fuente, "Ingresa tu nombre de usuario:")
-        ruta = os.path.join(base_path, folder["users"], f"{nombre}.json")
+        #ruta = os.path.join(base_path, folder["users"], f"{nombre}.json")
+        ruta = os.path.join(folder["users"], f"{nombre}.json")
         if os.path.exists(ruta):
             sp.speak_async(f"Bienvenido de nuevo, {nombre}")
             return nombre
@@ -82,7 +83,8 @@ def login(pantalla, fuente):
 def registrar(pantalla, fuente):
     while True:
         nombre = pedir_texto(pantalla, fuente, "Escribe tu nuevo nombre de usuario:")
-        ruta = os.path.join(base_path, folder["users"], f"{nombre}.json")
+        #ruta = os.path.join(base_path, folder["users"], f"{nombre}.json")
+        ruta = os.path.join(folder["users"], f"{nombre}.json")
         if os.path.exists(ruta):
             sp.speak_async("Ese nombre ya está en uso. ¿Deseas iniciar sesión con ese nombre? S o N")
             esperando = True
@@ -104,7 +106,8 @@ def registrar(pantalla, fuente):
             return nombre
 
 def registrar_con_nombre(pantalla, fuente, nombre):
-    ruta = os.path.join(base_path, folder["users"], f"{nombre}.json")
+    #ruta = os.path.join(base_path, folder["users"], f"{nombre}.json")
+    ruta = os.path.join(folder["users"], f"{nombre}.json")
     sp.speak_async(f"Usuario {nombre} registrado correctamente.")
     from perfil import default_config
     with open(ruta, 'w') as f:

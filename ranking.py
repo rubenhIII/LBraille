@@ -2,7 +2,6 @@ import os
 import json
 import pygame
 from perfil import get_color
-#from tts import speak_async
 from speaker import sp
 from entorno_instalacion import base_path
 
@@ -11,9 +10,9 @@ folder = {"users": "usr"}
 
 def ranking_usuarios():
     usuarios = []
-    for archivo in os.listdir(os.path.join(base_path, folder["users"])):
+    for archivo in os.listdir(os.path.join(folder["users"])):
         if archivo.endswith(".json"):
-            path = os.path.join(base_path, folder["users"], archivo)
+            path = os.path.join(folder["users"], archivo)
             with open(path, "r") as f:
                 datos = json.load(f)
                 usuarios.append((archivo[:-5], datos.get("puntos", 0)))

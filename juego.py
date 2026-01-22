@@ -50,7 +50,7 @@ def juego(usuario, screen, font):
     lose_sound = sonido_systema("incorrect.mp3", volumen=0.5)
     beep_sound = sonido_systema("lose_buzzer.mp3", volumen=0.5)
 
-    files = [f for f in os.listdir(os.path.join(base_path, folder["audio"])) if os.path.isfile(os.path.join(base_path, folder["audio"], f))]
+    files = [f for f in os.listdir(os.path.join(folder["audio"])) if os.path.isfile(os.path.join(folder["audio"], f))]
     min_length = max(1, int(0.4 * config["nivel"]))
     max_length = config["nivel"]
     filtered_words = [word for word in files if min_length <= len(word) - 4 <= max_length]
@@ -68,7 +68,7 @@ def juego(usuario, screen, font):
     mistakes = 0
 
     pygame.mixer.init()
-    audio_path = os.path.join(base_path, folder["audio"], f)
+    audio_path = os.path.join(folder["audio"], f)
     if os.path.exists(audio_path):
         pygame.mixer.music.load(audio_path)
         pygame.mixer.music.set_volume(1.0)

@@ -1,7 +1,6 @@
 import pyttsx4
 import threading
 import queue
-import time
 
 class Speaker:
     def __init__(self):
@@ -50,7 +49,7 @@ class Speaker:
             #self.engine.connect('finished-utterance', self._onEnd)
 
         except Exception as e:
-            print(f"Error al inicializar pyttsx3: {e}")
+            print(f"Error al inicializar pyttsx: {e}")
             self.engine = None
     
     def engine_worker(self):

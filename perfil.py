@@ -50,7 +50,7 @@ def cargar_configuracion_global(nombre_archivo="config.json"):
 
 
 def cargar_perfil(usuario):
-    ruta = os.path.join(base_path, folder["users"], f"{usuario}.json")
+    ruta = os.path.join(folder["users"], f"{usuario}.json")
     if os.path.exists(ruta):
         with open(ruta, "r") as f:
             return json.load(f)
@@ -59,7 +59,7 @@ def cargar_perfil(usuario):
 
 
 def guardar_perfil(usuario, config):
-    ruta = os.path.join(base_path, folder["users"], f"{usuario}.json")
+    ruta = os.path.join(folder["users"], f"{usuario}.json")
     with open(ruta, "w") as f:
         json.dump(config, f, indent=4)
 

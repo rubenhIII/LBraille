@@ -1,0 +1,1 @@
+pyinstaller --onefile --hidden-import pyttsx4 --hidden-import pyttsx4.drivers --hidden-import pyttsx4.drivers.sapi5 --hidden-import pyttsx4.drivers.nsss --hidden-import pyttsx4.drivers.espeak --add-data sys:sys main.py
