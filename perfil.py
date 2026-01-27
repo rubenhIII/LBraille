@@ -10,7 +10,7 @@ default_config = {
     "nivel": 2,
     "max_mistakes": 5,
     "case_sensitive": False,
-    "tiempoPorCaracter": 5,
+    "tiempoPorCaracter": 10,
     "puntos": 0,
     "ultima_actualizacion": datetime.now().strftime("%Y-%m-%d"),
     "puntos_hoy": 0
