@@ -103,6 +103,7 @@ def juego(usuario, screen, font):
                     config = actualizar_puntaje(config, puntos)
                     guardar_perfil(usuario, config)
                     mostrar_mensaje(screen, font, "¡Palabra completada!", get_color("CL_TEXTO_RES"))
+                    sp.speak_async("¡Palabra Correcta!")
                     return
                 if mistakes >= config["max_mistakes"]:
                     if pygame.mixer.music.get_busy():
@@ -111,6 +112,7 @@ def juego(usuario, screen, font):
                     if not pygame.mixer.get_busy():
                         lose_sound.play()
                     mostrar_mensaje(screen, font, "¡Demasiados errores!", get_color("CL_TEXTO_ADV"))
+                    sp.speak_async("¡Demasiados errores!")
                     return
 
         tiempo_actual = pygame.time.get_ticks()
