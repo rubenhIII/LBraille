@@ -1,0 +1,9 @@
+{
+    "nivel": 2,
+    "max_mistakes": 5,
+    "case_sensitive": false,
+    "tiempoPorCaracter": 10,
+    "puntos": 100,
+    "ultima_actualizacion": "2026-01-28",
+    "puntos_hoy": 100
+}

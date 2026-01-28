@@ -1,7 +1,6 @@
 import os
 import json
 import pygame
-#from tts import speak_async
 from speaker import sp
 from entorno_instalacion import base_path
 
@@ -67,7 +66,8 @@ def login(pantalla, fuente):
             sp.speak_async(f"Bienvenido de nuevo, {nombre}")
             return nombre
         else:
-            sp.speak_async("Usuario no encontrado. ¿Deseas registrarte con ese nombre? S o N")
+            sp.speak_async("Usuario no encontrado. ¿Deseas registrarte con ese nombre?")
+            sp.speak_async("Presiona S para sí, N para no")
             esperando = True
             while esperando:
                 for event in pygame.event.get():
@@ -76,13 +76,14 @@ def login(pantalla, fuente):
                         exit()
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_s:
-                            return registrar_con_nombre(pantalla, fuente, nombre)
+                            return registrar(pantalla, fuente, nombre)
                         elif event.key == pygame.K_n:
                             esperando = False
 
-def registrar(pantalla, fuente):
+def registrar(pantalla, fuente, nombre=""):
     while True:
-        nombre = pedir_texto(pantalla, fuente, "Escribe tu nuevo nombre de usuario:")
+        if nombre == "":
+            nombre = pedir_texto(pantalla, fuente, "Escribe tu nuevo nombre de usuario:")
         #ruta = os.path.join(base_path, folder["users"], f"{nombre}.json")
         ruta = os.path.join(folder["users"], f"{nombre}.json")
         if os.path.exists(ruta):
@@ -104,12 +105,3 @@ def registrar(pantalla, fuente):
             with open(ruta, 'w') as f:
                 json.dump(default_config.copy(), f, indent=4)
             return nombre
-
-def registrar_con_nombre(pantalla, fuente, nombre):
-    #ruta = os.path.join(base_path, folder["users"], f"{nombre}.json")
-    ruta = os.path.join(folder["users"], f"{nombre}.json")
-    sp.speak_async(f"Usuario {nombre} registrado correctamente.")
-    from perfil import default_config
-    with open(ruta, 'w') as f:
-        json.dump(default_config.copy(), f, indent=4)
-    return nombre
