@@ -58,7 +58,8 @@ def menu(usuario, screen, font):
                     selected = (selected + 1) % len(options)
                 elif event.key == pygame.K_RETURN:
                     if selected == 0:
-                        juego(usuario, screen, font)
+                        for games in range(5):
+                            juego(usuario, screen, font)
                         reproducir_ding()
                         sp.speak_async(options[selected])
                     elif selected == 1:
