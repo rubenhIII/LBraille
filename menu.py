@@ -64,14 +64,18 @@ def menu(usuario, screen, font):
                         for games in range(5):
                             juego(usuario, screen, font)
                         reproducir_ding()
+                        sp.speak_async("Juego finalizado")
+                        sp.speak_async("Menú principal")
                         sp.speak_async(options[selected])
                     elif selected == 1:
                         configuracion_menu(usuario, screen, font)
                         reproducir_ding()
+                        sp.speak_async("Menú principal")
                         sp.speak_async(options[selected])
                     elif selected == 2:
                         mostrar_ranking(usuario, screen, font)
                         reproducir_ding()
+                        sp.speak_async("Menú principal")
                         sp.speak_async(options[selected])
                     elif selected == 3:
                         pygame.quit()
