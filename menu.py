@@ -32,6 +32,8 @@ def menu(usuario, screen, font):
 
     # Reproducir sonido al entrar
     reproducir_ding()
+    sp.speak_async("Menú principal")
+
     #if sp.speak_async(options[selected]) == False:
     #    print("El engine no está disponible")
     #else:
