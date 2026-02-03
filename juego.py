@@ -51,6 +51,7 @@ def juego(usuario, screen, font):
     win_sound = sonido_systema("correct.mp3", volumen=0.5)
     lose_sound = sonido_systema("incorrect.mp3", volumen=0.5)
     beep_sound = sonido_systema("lose_buzzer.mp3", volumen=0.5)
+    incorrect_sound = sonido_systema("incorrect_buzz.mp3", volumen=0.5)
 
     files = [f for f in os.listdir(os.path.join(folder["audio"])) if os.path.isfile(os.path.join(folder["audio"], f))]
     min_length = max(1, int(0.4 * config["nivel"]))
@@ -94,8 +95,10 @@ def juego(usuario, screen, font):
                 char = event.text
                 correct_char = word[len(typed):len(typed) + 1]
                 if char == correct_char or (not config["case_sensitive"] and char.lower() == correct_char):
+                    win_sound.play()
                     typed += char
                 else:
+                    incorrect_sound.play()
                     mistakes += 1
 
                 if typed == word:
