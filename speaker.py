@@ -69,7 +69,6 @@ class Speaker:
     def create_speaker(self):
         self.get_engine()
         if self.engine_thread is None or not self.engine_thread.is_alive():
-            print("Creando Hilo")
             try:
                 self.engine_thread = threading.Thread(target=self.engine_worker, daemon=True)
                 self.engine_thread.start()

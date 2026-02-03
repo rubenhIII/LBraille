@@ -63,23 +63,17 @@ def menu(usuario, screen, font):
                     if selected == 0:
                         for games in range(5):
                             juego(usuario, screen, font)
-                        reproducir_ding()
                         sp.speak_async("Juego finalizado")
-                        sp.speak_async("Menú principal")
-                        sp.speak_async(options[selected])
                     elif selected == 1:
                         configuracion_menu(usuario, screen, font)
-                        reproducir_ding()
-                        sp.speak_async("Menú principal")
-                        sp.speak_async(options[selected])
                     elif selected == 2:
                         mostrar_ranking(usuario, screen, font)
-                        reproducir_ding()
-                        sp.speak_async("Menú principal")
-                        sp.speak_async(options[selected])
                     elif selected == 3:
                         pygame.quit()
                         sys.exit()
+                    reproducir_ding()
+                    sp.speak_async("Menú principal")
+                    sp.speak_async(options[selected])
 
         if selected != last_selected and (current_time - last_tts_time) > 200:
             sp.speak_async(options[selected])
