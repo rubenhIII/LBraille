@@ -1,6 +1,7 @@
 import os
 import random
 import pygame
+from time import sleep
 from perfil import cargar_perfil, guardar_perfil, get_color, get_configuracion
 from entorno_instalacion import base_path
 from speaker import sp
@@ -103,7 +104,8 @@ def juego(usuario, screen, font):
                     config = actualizar_puntaje(config, puntos)
                     guardar_perfil(usuario, config)
                     mostrar_mensaje(screen, font, "¡Palabra completada!", get_color("CL_TEXTO_RES"))
-                    sp.speak_async("¡Palabra Correcta!")
+                    sp.speak_async("¡Correcto!")
+                    sleep(2.5)
                     return
                 if mistakes >= config["max_mistakes"]:
                     if pygame.mixer.music.get_busy():
@@ -113,6 +115,7 @@ def juego(usuario, screen, font):
                         lose_sound.play()
                     mostrar_mensaje(screen, font, "¡Demasiados errores!", get_color("CL_TEXTO_ADV"))
                     sp.speak_async("¡Demasiados errores!")
+                    sleep(2.5)
                     return
 
         tiempo_actual = pygame.time.get_ticks()
@@ -126,6 +129,7 @@ def juego(usuario, screen, font):
         if tiempo_restante <= 0:
             mostrar_mensaje(screen, font, "¡Tiempo agotado!", get_color("CL_TEXTO_ADV"))
             sp.speak_async("Tiempo Agotado!")
+            sleep(2.5)
             return
 
 

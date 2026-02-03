@@ -2,6 +2,7 @@ import pygame
 import sys
 from speaker import sp
 from juego import juego
+from tutorial import jugar_tutorial
 from configuracion import configuracion_menu
 from ranking import mostrar_ranking
 from perfil import get_color
@@ -24,7 +25,7 @@ def draw_text(text, font, color, surface, x, y):
 
 
 def menu(usuario, screen, font):
-    options = ["Juego", "Configuración", "Ranking", "Salir"]
+    options = ["Juego", "Tutorial", "Ranking", "Salir"]
     selected = 0
     last_selected = -1
     last_tts_time = 0
