@@ -2,7 +2,9 @@ import os
 import sys
 import json
 import pygame
+
 from perfil import get_color
+from speaker import sp
 from entorno_instalacion import base_path
 
 class GameUI:
@@ -12,17 +14,36 @@ class GameUI:
         self.font = None
 
     def ui_tutorial(self, screen, font):
-        options = ["Juego", "Tutorial", "Ranking", "Salir"]
-        selected = 0
-        last_selected = -1
-        last_tts_time = 0
         ruta = os.path.join(base_path, "sys", "alfabeto.json")
         with open(ruta, "r") as file:
             alphabet = json.load(file)
         letters = alphabet["BASE"]
+        self.draw_menu("Tutorial", list(letters.keys()), screen, font)
+        
+
+    def draw_menu(self, title: str, options: list, screen: pygame.Surface, font: pygame.font.Font) -> None:
+        """
+        Método para renderizar un menú en base a una lista de opciones
+        
+        :param options: Lista de opciones del menú
+        :type options: list
+        :param screen: Surface de pygame
+        :type screen: pygame.Surface
+        :param font: Fuente del texto de pygame
+        :type font: pygame.font.Font
+        """
+        scroll = 0
+        scroll_steps = 8 # Number of options by screen
+        selected = 0
+        last_selected = -1
+        last_tts_time = pygame.time.get_ticks()
+
+        self.draw_text(title, font, get_color("CL_TEXTO"), screen, 20, 20)
+        sp.speak_async(title)
+
         while True:
-            for i, option in enumerate(letters):
-                color = get_color("CL_TEXTO_RES") if i == selected else get_color("CL_TEXTO")
+            for i, option in enumerate(options[scroll:min((scroll+scroll_steps),len(options))]):
+                color = get_color("CL_TEXTO_RES") if (i+scroll) == selected else get_color("CL_TEXTO")
                 self.draw_text(option, font, color, screen, 40, 100 + i * 50)
             pygame.display.flip()
 
@@ -32,12 +53,37 @@ class GameUI:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key in [pygame.K_UP, pygame.K_BACKSPACE]:
-                        selected -= 1 % len(options)
+                        selected = (selected - 1) % len(options)
                     elif event.key in [pygame.K_DOWN, pygame.K_SPACE]:
-                        selected += 1 % len(options)
+                        selected = (selected + 1) % len(options)
                     elif event.key == pygame.K_q:
                         pygame.quit()
                         sys.exit()
+
+            if (selected != last_selected) and (pygame.time.get_ticks() - last_tts_time >= 200):
+                # Circular menu algorithm
+                if selected == 0 and selected != scroll:
+                    scroll = 0
+                    screen.fill(get_color("CL_FONDO"))
+                    self.draw_text(title, font, get_color("CL_TEXTO"), screen, 20, 20)
+                elif selected == (len(options) - 1) and scroll != (len(options) // scroll_steps * scroll_steps):
+                    scroll = len(options) // scroll_steps * scroll_steps
+                    screen.fill(get_color("CL_FONDO"))
+                    self.draw_text(title, font, get_color("CL_TEXTO"), screen, 20, 20)
+                elif selected >= (scroll+scroll_steps):
+                    scroll = (scroll + scroll_steps) % (len(options)+scroll_steps-1)
+                    screen.fill(get_color("CL_FONDO"))
+                    self.draw_text(title, font, get_color("CL_TEXTO"), screen, 20, 20)
+                elif selected < scroll:
+                    scroll = (scroll - scroll_steps)  % (len(options)+scroll_steps-1)
+                    screen.fill(get_color("CL_FONDO"))
+                    self.draw_text(title, font, get_color("CL_TEXTO"), screen, 20, 20)
+
+                last_selected = selected
+                last_tts_time = pygame.time.get_ticks()
+                sp.speak_async(options[selected])
+
+            
 
     def draw_text(self, text, font, color, surface, x, y):
         obj = font.render(text, True, color)

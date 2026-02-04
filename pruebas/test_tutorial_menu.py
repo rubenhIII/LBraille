@@ -25,7 +25,7 @@ cargar_configuracion_global()
 # Iniciar menú
 gui = GameUI()
 gui.ui_tutorial(screen, font)
-menu(usuario, screen, font)
+#menu(usuario, screen, font)
 
 # Cerrar Pygame al salir
 pygame.quit()
