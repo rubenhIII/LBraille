@@ -18,26 +18,31 @@ class GameUI:
         with open(ruta, "r") as file:
             alphabet = json.load(file)
         letters = alphabet["BASE"]
-        self.draw_menu("Tutorial", list(letters.keys()), screen, font)
+        self.draw_menu("Tutorial", letters, screen, font)
         
 
-    def draw_menu(self, title: str, options: list, screen: pygame.Surface, font: pygame.font.Font) -> None:
+    def draw_menu(self, title: str, options: dict, screen: pygame.Surface, font: pygame.font.Font) -> None:
         """
         Método para renderizar un menú en base a una lista de opciones
         
-        :param options: Lista de opciones del menú
-        :type options: list
+        :param options: Diccionario de opciones del menú - Opción: Acción
+        :type options: dictionary
         :param screen: Surface de pygame
         :type screen: pygame.Surface
         :param font: Fuente del texto de pygame
         :type font: pygame.font.Font
         """
+
+        action = list(options.values())
+        options = list(options.keys())
+
         scroll = 0
         scroll_steps = 8 # Number of options by screen
         selected = 0
         last_selected = -1
         last_tts_time = pygame.time.get_ticks()
 
+        screen.fill(get_color("CL_FONDO"))
         self.draw_text(title, font, get_color("CL_TEXTO"), screen, 20, 20)
         sp.speak_async(title)
 
@@ -59,6 +64,10 @@ class GameUI:
                     elif event.key == pygame.K_q:
                         pygame.quit()
                         sys.exit()
+                    elif event.key == pygame.K_RETURN:
+                        print(action[selected])
+                        sp.speak_async(str(action[selected]))
+
 
             if (selected != last_selected) and (pygame.time.get_ticks() - last_tts_time >= 200):
                 # Circular menu algorithm
@@ -82,8 +91,6 @@ class GameUI:
                 last_selected = selected
                 last_tts_time = pygame.time.get_ticks()
                 sp.speak_async(options[selected])
-
-            
 
     def draw_text(self, text, font, color, surface, x, y):
         obj = font.render(text, True, color)

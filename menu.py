@@ -9,6 +9,8 @@ from perfil import get_color
 import os
 from entorno_instalacion import base_path
 
+from gameui import GameUI
+
 
 def reproducir_ding():
     try:
@@ -34,10 +36,7 @@ def menu(usuario, screen, font):
     reproducir_ding()
     sp.speak_async("Menú principal")
 
-    #if sp.speak_async(options[selected]) == False:
-    #    print("El engine no está disponible")
-    #else:
-    #    print("El engine SI está disponible")
+    gui = GameUI()
 
     while True:
         current_time = pygame.time.get_ticks()
@@ -65,7 +64,8 @@ def menu(usuario, screen, font):
                             juego(usuario, screen, font)
                         sp.speak_async("Juego finalizado")
                     elif selected == 1:
-                        configuracion_menu(usuario, screen, font)
+                        # configuracion_menu(usuario, screen, font)
+                        gui.ui_tutorial(screen, font)
                     elif selected == 2:
                         mostrar_ranking(usuario, screen, font)
                     elif selected == 3:
