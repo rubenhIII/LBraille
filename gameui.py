@@ -13,12 +13,87 @@ class GameUI:
         self.screen = None
         self.font = None
 
+    def reproducir_ding(self):
+        try:
+            ding = pygame.mixer.Sound(os.path.join(base_path, "sys", "ding.mp3"))
+            ding.play()
+        except Exception as e:
+            print(f"Error reproduciendo ding: {e}")
+
+    def draw_text(self, text, font, color, surface, x, y):
+        obj = font.render(text, True, color)
+        rect = obj.get_rect(topleft=(x, y))
+        surface.blit(obj, rect)
+
     def ui_tutorial(self, screen, font):
         ruta = os.path.join(base_path, "sys", "alfabeto.json")
         with open(ruta, "r") as file:
             alphabet = json.load(file)
         letters = alphabet["BASE"]
         self.draw_menu("Tutorial", letters, screen, font)
+
+    def draw_main_menu(self):
+        options = ["Juego", "Tutorial", "Ranking", "Salir"]
+        options = {
+            "Juego": print,
+            "Tutorial": print,
+            "Ranking": print,
+        }
+
+        selected = 0
+        last_selected = -1
+        last_tts_time = 0
+
+        # Reproducir sonido al entrar
+        self.reproducir_ding()
+        sp.speak_async("Menú principal")
+
+        gui = GameUI()
+
+        while True:
+            current_time = pygame.time.get_ticks()
+            self.screen.fill(get_color("CL_FONDO"))
+            self.draw_text("Menú Principal", self.font, get_color("CL_TEXTO"), self.screen, 20, 20)
+
+            for i, option in enumerate(options):
+                color = get_color("CL_TEXTO_RES") if i == selected else get_color("CL_TEXTO")
+                self.draw_text(option, self.font, color, self.screen, 40, 100 + i * 50)
+
+            pygame.display.flip()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key in [pygame.K_UP, pygame.K_BACKSPACE]:
+                        selected = (selected - 1) % len(options)
+                    elif event.key in [pygame.K_DOWN, pygame.K_SPACE]:
+                        selected = (selected + 1) % len(options)
+                    elif event.key == pygame.K_RETURN:
+                        if selected == 0:
+                            #for games in range(5):
+                                #juego(usuario, screen, font)
+                            sp.speak_async("Juego finalizado")
+                        elif selected == 1:
+                            # configuracion_menu(usuario, screen, font)
+                            gui.ui_tutorial(self.screen, self.font)
+                        elif selected == 2:
+                            #mostrar_ranking(usuario, screen, font)
+                            pass
+                        elif selected == 3:
+                            pygame.quit()
+                            sys.exit()
+                            reproducir_ding()
+                    sp.speak_async("Menú principal")
+                    sp.speak_async(options[selected])
+
+            if selected != last_selected and (current_time - last_tts_time) > 200:
+                sp.speak_async(options[selected])
+                last_selected = selected
+                last_tts_time = current_time
+
+            pygame.time.delay(30)
         
 
     def draw_menu(self, title: str, options: dict, screen: pygame.Surface, font: pygame.font.Font) -> None:
