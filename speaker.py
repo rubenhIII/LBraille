@@ -26,7 +26,7 @@ class Speaker:
             if language.lower() in voice.name :
                 engine.setProperty('voice', voice.id)
                 return True
-        raise RuntimeError("Lenguaje '{}' para el género '{}' no fue encontrado".format(language, gender))
+        raise RuntimeError("Lenguaje '{}' para el género '{}' no fue encontrado".format(language))
        
     # Inicializar el motor de voz
     def _onStart(self, name):
