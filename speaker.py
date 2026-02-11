@@ -14,14 +14,16 @@ class Speaker:
         self.mutex = threading.Lock()
         self.speaking = False
 
+        self.default_voices_ = ["ES", "MX", "Spanish"]
+
         self.create_speaker()
 
     def __del__(self):
         pass
 
-    def change_voice(self, engine, language, gender='VoiceGenderFemale'):
+    def change_voice(self, engine, language: list): 
         for voice in engine.getProperty('voices'):
-            if language in voice.languages and gender == voice.gender:
+            if language.lower() in voice.name :
                 engine.setProperty('voice', voice.id)
                 return True
         raise RuntimeError("Lenguaje '{}' para el género '{}' no fue encontrado".format(language, gender))
