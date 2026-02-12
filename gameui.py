@@ -18,7 +18,7 @@ class GameUI:
         with open(ruta, "r") as file:
             alphabet = json.load(file)
         letters = alphabet["BASE"]
-        description = "Navega con izquierda y derecha sobre las letras y números. Presiona ENTER para saber su representacion. Presiona letra A para salir."
+        description = "Navega con las teclas de ARRIBA y ABAJO sobre las letras y números. Presiona ENTER para saber su representacion. Presiona letra A para salir."
         self.draw_menu("Tutorial", description, letters, screen, font)
         
 
