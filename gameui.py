@@ -18,7 +18,7 @@ class GameUI:
         with open(ruta, "r") as file:
             alphabet = json.load(file)
         letters = alphabet["BASE"]
-        description = "Navega con las teclas de ARRIBA y ABAJO sobre las letras y números. Presiona ENTER para saber su representacion. Presiona letra A para salir."
+        description = "Navega con las teclas de IZQUIERDA y DERECHA sobre las letras y números. Presiona ENTER para saber su representacion. Presiona letra A para salir."
         self.draw_menu("Tutorial", description, letters, screen, font)
         
 
@@ -59,9 +59,9 @@ class GameUI:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
-                    if event.key in [pygame.K_UP, pygame.K_BACKSPACE]:
+                    if event.key in [pygame.K_LEFT, pygame.K_BACKSPACE]:
                         selected = (selected - 1) % len(options)
-                    elif event.key in [pygame.K_DOWN, pygame.K_SPACE]:
+                    elif event.key in [pygame.K_RIGHT, pygame.K_SPACE]:
                         selected = (selected + 1) % len(options)
                     elif event.key == pygame.K_q:
                         pygame.quit()
