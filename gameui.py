@@ -18,10 +18,11 @@ class GameUI:
         with open(ruta, "r") as file:
             alphabet = json.load(file)
         letters = alphabet["BASE"]
-        self.draw_menu("Tutorial", letters, screen, font)
+        description = "Navega con izquierda y derecha sobre las letras y números. Presiona ENTER para saber su representacion. Presiona letra A para salir."
+        self.draw_menu("Tutorial", description, letters, screen, font)
         
 
-    def draw_menu(self, title: str, options: dict, screen: pygame.Surface, font: pygame.font.Font) -> None:
+    def draw_menu(self, title: str, description: str, options: dict, screen: pygame.Surface, font: pygame.font.Font) -> None:
         """
         Método para renderizar un menú en base a una lista de opciones
         
@@ -45,6 +46,7 @@ class GameUI:
         screen.fill(get_color("CL_FONDO"))
         self.draw_text(title, font, get_color("CL_TEXTO"), screen, 20, 20)
         sp.speak_async(title)
+        sp.speak_async(description)
 
         while True:
             for i, option in enumerate(options[scroll:min((scroll+scroll_steps),len(options))]):
@@ -64,6 +66,8 @@ class GameUI:
                     elif event.key == pygame.K_q:
                         pygame.quit()
                         sys.exit()
+                    elif event.key == pygame.K_a:
+                        return
                     elif event.key == pygame.K_RETURN:
                         print(action[selected])
                         sp.speak_async(str(action[selected]))

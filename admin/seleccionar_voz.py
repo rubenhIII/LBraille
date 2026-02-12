@@ -2,12 +2,27 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
+from entorno_instalacion import base_path
 import pyttsx4
+import json
+import os
 
 class VoiceSelector:
     def __init__(self):
         self.engine = pyttsx4.init()
         self.available_voices = self.get_available_voices()
+
+        self.load_speaker_conf()
+
+    def load_speaker_conf(self):
+        conf_path = os.path.join(base_path, 'sys', 'speaker_conf.json')
+        with open(conf_path) as f:
+            self.config = json.load(f)
+
+    def store_speaker_conf(self):
+        conf_path = os.path.join(base_path, 'sys', 'speaker_conf.json')
+        with open(conf_path, "w") as f:
+            json.dump(self.config, f, indent=4)
 
     def get_current_voice(self):
         return self.engine.getProperty('voice')
@@ -40,7 +55,11 @@ class VoiceSelector:
         for voice in self.engine.getProperty('voices'):
             if voice_selected.id == voice.id:
                 self.engine.setProperty('voice', voice.id)
-                vc.engine.say("Nueva voz seleccionada")
+
+                self.config["voice_id"] = voice.id
+                self.store_speaker_conf()
+
+                vc.engine.say("Nueva voz por defecto seleccionada")
                 vc.engine.runAndWait()
                 return True
         raise RuntimeError("Lenguaje '{}' para el género '{}' no fue encontrado".format(voice_selected.languages, voice_selected.gender))

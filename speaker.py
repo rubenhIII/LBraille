@@ -1,6 +1,9 @@
+from entorno_instalacion import base_path
 import pyttsx4
 import threading
 import queue
+import json
+import os
 
 class Speaker:
     def __init__(self):
@@ -14,19 +17,27 @@ class Speaker:
         self.mutex = threading.Lock()
         self.speaking = False
 
-        self.default_voices_ = ["ES", "MX", "Spanish"]
+        self.__default_voice = None
 
+        self.load_configuration()
         self.create_speaker()
 
-    def __del__(self):
-        pass
+    def load_configuration(self):
+        conf_path = os.path.join(base_path, "sys", "speaker_conf.json")
+        with open(conf_path, "r") as f:
+            sp_conf = json.load(f)
+            print(sp_conf)
+            self.__default_voice = sp_conf["voice_id"]
 
-    def change_voice(self, engine, language: list): 
-        for voice in engine.getProperty('voices'):
-            if language.lower() in voice.name :
-                engine.setProperty('voice', voice.id)
+    def change_voice(self):
+        for voice in self.engine.getProperty('voices'):
+            if self.__default_voice == voice.id:
+                self.engine.setProperty('voice', voice.id)
+                self.engine.say("Motor de voz seleccionado")
+                self.engine.runAndWait()      
+                #print(f"Lenguaje {voice.name} Voz seleccionada {voice}")
                 return True
-        raise RuntimeError("Lenguaje '{}' para el género '{}' no fue encontrado".format(language))
+        raise RuntimeError(f"Lenguaje '{self.__default_voice}' no fue encontrado")
        
     # Inicializar el motor de voz
     def _onStart(self, name):
@@ -38,14 +49,13 @@ class Speaker:
         print('Finalizando', name, completed)
         self.speaking = False
 
-
     def get_engine(self):
         try:
             self.engine = pyttsx4.init()
             self.engine.setProperty('rate', 150)
-            self.engine.setProperty('volume', 0.5)
+            self.engine.setProperty('volume', 0.8)
 
-            #self.change_voice(self.engine, 'es-ES', "Female")
+            if self.__default_voice != "": self.change_voice()
             #self.engine.connect('started-utterance', self._onStart)
             #self.engine.connect('started-word', self._onWord)
             #self.engine.connect('finished-utterance', self._onEnd)
